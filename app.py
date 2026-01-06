@@ -7,9 +7,17 @@ from datetime import datetime
 from dateutil import parser
 import re
 
+import os
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kejaksaan-secret-key-123'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kejaksaan.db'
+
+# Use DATABASE_URL if provided (Railway/Heroku), else fall back to local SQLite
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)  # Fix for some platforms using postgres://
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///kejaksaan.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
