@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h3>Input Data Tersangka Baru</h3>
+    <form action="{{ url_for('add_case') }}" method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Nama Tersangka</label>
+                <input type="text" name="nama_tersangka" required>
+            </div>
+            <div class="form-group">
+                <label>Pasal yang disangkakan</label>
+                <input type="text" name="pasal" required>
+            </div>
+            <div class="form-group">
+                <label>SPDP (No & Tgl Diterima)</label>
+                <input type="text" name="spdp" placeholder="Contoh: NO.123 TGL 01/01/2023" required>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Simpan Data</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Data Perkara</h3>
+    <div class="data-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50px;">NO</th>
+                    <th>NAMA TERSANGKA</th>
+                    <th>PASAL</th>
+                    <th>SPDP</th>
+                    <th>BERKAS TAHAP I</th>
+                    <th>P-18 / P-19</th>
+                    <th>P-21</th>
+                    <th>TAHAP II</th>
+                    <th>LIMPAH PN</th>
+                    <th>KETERANGAN</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for case in cases %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ case.nama_tersangka }}</td>
+                    <td>{{ case.pasal }}</td>
+                    <!-- Updated: Clickable cells for Modal Date Picker -->
+                    <td class="date-cell {{ case.spdp | check_overdue('spdp') }}" 
+                        data-id="{{ case.id }}" 
+                        data-field="spdp" 
+                        data-value="{{ case.spdp }}">
+                        {{ case.spdp }}
+                    </td>
+                    
+                    <td class="date-cell {{ case.berkas_tahap_1 | check_overdue('berkas_tahap_1') }}"
+                        data-id="{{ case.id }}" 
+                        data-field="berkas_tahap_1"
+                        data-value="{{ case.berkas_tahap_1 }}">
+                        {{ case.berkas_tahap_1 }}
+                    </td>
+                        
+                    <td class="date-cell {{ case.p18_p19 | check_overdue('p18_p19') }}"
+                        data-id="{{ case.id }}" 
+                        data-field="p18_p19"
+                        data-value="{{ case.p18_p19 }}">
+                        {{ case.p18_p19 }}
+                    </td>
+                        
+                    <td class="date-cell {{ case.p21 | check_overdue('p21') }}"
+                        data-id="{{ case.id }}" 
+                        data-field="p21"
+                        data-value="{{ case.p21 }}">
+                        {{ case.p21 }}
+                    </td>
+                        
+                    <td class="date-cell {{ case.tahap_2 | check_overdue('tahap_2') }}"
+                        data-id="{{ case.id }}" 
+                        data-field="tahap_2"
+                        data-value="{{ case.tahap_2 }}">
+                        {{ case.tahap_2 }}
+                    </td>
+                        
+                    <td class="date-cell {{ case.limpah_pn | check_overdue('limpah_pn') }}"
+                        data-id="{{ case.id }}" 
+                        data-field="limpah_pn"
+                        data-value="{{ case.limpah_pn }}">
+                        {{ case.limpah_pn }}
+                    </td>
+                    
+                    <td contenteditable="true" 
+                        class="editable" 
+                        data-id="{{ case.id }}" 
+                        data-field="keterangan">{{ case.keterangan }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Date Picker Modal -->
+<div id="dateModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <h3>Pilih Tanggal</h3>
+        <input type="datetime-local" id="modalDateInput" class="modal-input">
+        <div class="modal-actions">
+            <button id="cancelDateBtn" class="btn btn-secondary">Batal</button>
+            <button id="saveDateBtn" class="btn">Simpan</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
