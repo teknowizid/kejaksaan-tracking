@@ -85,7 +85,7 @@ def check_overdue(value, field_name):
         return ""
     
     limits = {
-        'spdp': 25,
+        'spdp': 25, # Overdue jika: Hari Ini > (Tgl SPDP + 25 hari)
         'berkas_tahap_1': 6,
         'p18_p19': 10,
         'p21': 12,
@@ -174,7 +174,8 @@ def update_cell():
     # Allowed: Existing stages + New SPDP fields
     allowed_fields = [
         'berkas_tahap_1', 'p18_p19', 'p21', 'tahap_2', 'limpah_pn', 'keterangan',
-        'spdp_tgl_terima', 'spdp_tgl_polisi' # Allow editing dates via modal
+        'spdp_tgl_terima', 'spdp_tgl_polisi', # Allow editing dates via modal
+        'nama_tersangka', 'pasal' # Allow editing text fields
     ]
     if field not in allowed_fields:
         return jsonify({'success': False, 'error': 'Field not editable'}), 403

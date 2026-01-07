@@ -29,7 +29,18 @@ class Case(db.Model):
     keterangan = db.Column(db.Text)
     
     # Metadata
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+    @property
+    def is_complete(self):
+        """Check if SPDP, Tahap 1, P18/19, P21, and Tahap 2 are all filled"""
+        return all([
+            self.spdp_tgl_terima,
+            self.berkas_tahap_1, 
+            self.p18_p19, 
+            self.p21, 
+            self.tahap_2
+        ])
 
     def to_dict(self):
         return {
