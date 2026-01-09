@@ -132,7 +132,9 @@ def dashboard():
 @login_required
 def add_case():
     nama = request.form.get('nama_tersangka')
+    umur = request.form.get('umur_tersangka')
     pasal = request.form.get('pasal')
+    jpu = request.form.get('jpu')
     
     # New SPDP Inputs
     tgl_terima = request.form.get('spdp_tgl_terima')
@@ -142,7 +144,9 @@ def add_case():
     
     new_case = Case(
         nama_tersangka=nama,
+        umur_tersangka=umur,
         pasal=pasal,
+        jpu=jpu,
         spdp_tgl_terima=tgl_terima,
         spdp_ket_terima=ket_terima,
         spdp_tgl_polisi=tgl_polisi,
@@ -175,7 +179,7 @@ def update_cell():
     allowed_fields = [
         'berkas_tahap_1', 'p18_p19', 'p21', 'tahap_2', 'limpah_pn', 'keterangan',
         'spdp_tgl_terima', 'spdp_tgl_polisi', # Allow editing dates via modal
-        'nama_tersangka', 'pasal' # Allow editing text fields
+        'nama_tersangka', 'umur_tersangka', 'pasal', 'jpu' # Allow editing text fields
     ]
     if field not in allowed_fields:
         return jsonify({'success': False, 'error': 'Field not editable'}), 403
@@ -202,7 +206,9 @@ def migrate_db():
         'spdp_tgl_terima': 'VARCHAR(50)',
         'spdp_ket_terima': 'VARCHAR(200)',
         'spdp_tgl_polisi': 'VARCHAR(50)',
-        'spdp_ket_polisi': 'VARCHAR(200)'
+        'spdp_ket_polisi': 'VARCHAR(200)',
+        'umur_tersangka': 'INTEGER',
+        'jpu': 'VARCHAR(200)'
     }
     
     with db.engine.connect() as conn:

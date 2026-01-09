@@ -11,7 +11,9 @@ class Case(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Read-only / Form Input fields
     nama_tersangka = db.Column(db.String(200))
+    umur_tersangka = db.Column(db.Integer) # New Field
     pasal = db.Column(db.String(200))
+    jpu = db.Column(db.String(200)) # New Field
     spdp = db.Column(db.String(200), nullable=True) # Legacy field
     
     # New SPDP Fields
@@ -46,7 +48,9 @@ class Case(db.Model):
         return {
             'id': self.id,
             'nama_tersangka': self.nama_tersangka,
+            'umur_tersangka': self.umur_tersangka,
             'pasal': self.pasal,
+            'jpu': self.jpu,
             'spdp': self.spdp,
             'berkas_tahap_1': self.berkas_tahap_1,
             'p18_p19': self.p18_p19,

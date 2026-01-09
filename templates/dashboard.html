@@ -10,8 +10,16 @@
                 <input type="text" name="nama_tersangka" required>
             </div>
             <div class="form-group">
+                <label>Umur Tersangka</label>
+                <input type="number" name="umur_tersangka">
+            </div>
+            <div class="form-group">
                 <label>Pasal yang disangkakan</label>
                 <input type="text" name="pasal" required>
+            </div>
+            <div class="form-group">
+                <label>JPU</label>
+                <input type="text" name="jpu">
             </div>
             <!-- SPDP Input Group -->
             <div style="grid-column: span 3; border-top: 1px solid #eee; padding-top: 1rem; margin-top: 1rem;">
@@ -52,7 +60,9 @@
                 <tr>
                     <th style="width: 50px;">NO</th>
                     <th>NAMA TERSANGKA</th>
+                    <th>UMUR</th>
                     <th>PASAL</th>
+                    <th>JPU</th>
                     <th style="min-width: 220px;">SPDP<br><small>(KEJAKSAAN / POLISI)</small></th>
                     <th>BERKAS TAHAP I</th>
                     <th>P-18 / P-19</th>
@@ -67,7 +77,9 @@
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td class="editable" contenteditable="true" data-id="{{ case.id }}" data-field="nama_tersangka">{{ case.nama_tersangka }}</td>
+                    <td class="editable" contenteditable="true" data-id="{{ case.id }}" data-field="umur_tersangka">{{ case.umur_tersangka or '' }}</td>
                     <td class="editable" contenteditable="true" data-id="{{ case.id }}" data-field="pasal">{{ case.pasal }}</td>
+                    <td class="editable" contenteditable="true" data-id="{{ case.id }}" data-field="jpu">{{ case.jpu or '' }}</td>
                     <!-- Improved SPDP Cell -->
                     <td class="date-cell {% if case.is_complete %}text-success-bold{% else %}{{ case.spdp_tgl_terima | check_overdue('spdp') }}{% endif %}" 
                         data-id="{{ case.id }}" 
