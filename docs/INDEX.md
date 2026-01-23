@@ -8,6 +8,7 @@
 | [CARA_BUILD_EXE.txt](CARA_BUILD_EXE.txt) | Panduan lengkap (Bahasa Indonesia) |
 | [BUILD_CHEATSHEET.md](BUILD_CHEATSHEET.md) | Command reference & troubleshooting |
 | [build-exe.md](build-exe.md) | Dokumentasi teknis build process |
+| [BUILD_PLATFORM.md](BUILD_PLATFORM.md) | ⚠️ Platform guide (Linux/Windows/macOS) |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Arsitektur sistem & data flow |
 
 ## 📖 Fitur & Development

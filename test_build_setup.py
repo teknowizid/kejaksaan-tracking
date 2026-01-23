@@ -29,7 +29,7 @@ def check_dependencies():
         'psycopg2': 'psycopg2-binary',
         'dateutil': 'python-dateutil',
         'dotenv': 'python-dotenv',
-        'pyinstaller': 'PyInstaller',
+        'PyInstaller': 'pyinstaller',
         'webview': 'pywebview',
     }
     

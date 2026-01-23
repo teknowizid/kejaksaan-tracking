@@ -106,7 +106,12 @@ def create_spec_file():
     """Buat file .spec untuk PyInstaller"""
     print("📝 Membuat kejaksaan.spec...")
     
-    spec_content = """# -*- mode: python ; coding: utf-8 -*-
+    # Detect OS for proper file separator
+    import platform
+    is_windows = platform.system() == 'Windows'
+    separator = ';' if is_windows else ':'
+    
+    spec_content = f"""# -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
 
@@ -127,7 +132,7 @@ a = Analysis(
         'dateutil.parser',
     ],
     hookspath=[],
-    hooksconfig={},
+    hooksconfig={{}},
     runtime_hooks=[],
     excludes=[],
     win_no_prefer_redirects=False,
@@ -169,30 +174,51 @@ exe = EXE(
 
 def build_exe():
     """Build .exe menggunakan PyInstaller"""
+    import platform
+    os_name = platform.system()
+    
     print("\n🔨 Memulai build dengan PyInstaller...")
+    print(f"   Platform: {os_name}")
+    
+    if os_name == "Linux":
+        print("   ⚠️  PERHATIAN: Build di Linux akan menghasilkan executable Linux (bukan .exe)")
+        print("   Untuk build .exe Windows, jalankan script ini di Windows")
+    
     print("   Ini akan memakan waktu beberapa menit...\n")
     
     try:
-        # Run PyInstaller
+        # Run PyInstaller using python -m (works better with venv)
         result = subprocess.run(
-            ['pyinstaller', '--clean', 'kejaksaan.spec'],
+            [sys.executable, '-m', 'PyInstaller', '--clean', 'kejaksaan.spec'],
             check=True,
             capture_output=True,
             text=True
         )
         
         print("✅ Build berhasil!")
-        print(f"\n📦 File .exe tersedia di: dist/E-Kejaksaan.exe")
-        print(f"   Ukuran: ~{os.path.getsize('dist/E-Kejaksaan.exe') / (1024*1024):.1f} MB")
+        
+        # Determine output file based on OS
+        if os_name == "Windows":
+            exe_path = 'dist/E-Kejaksaan.exe'
+            print(f"\n📦 File .exe tersedia di: {exe_path}")
+        else:
+            exe_path = 'dist/E-Kejaksaan'
+            print(f"\n📦 File executable tersedia di: {exe_path}")
+        
+        # Check if file exists before getting size
+        if os.path.exists(exe_path):
+            print(f"   Ukuran: ~{os.path.getsize(exe_path) / (1024*1024):.1f} MB")
         
         return True
         
     except subprocess.CalledProcessError as e:
         print("❌ Build gagal!")
-        print(f"Error: {e.stderr}")
+        print(f"Error output:")
+        print(e.stderr if e.stderr else e.stdout)
         return False
-    except FileNotFoundError:
-        print("❌ PyInstaller tidak ditemukan!")
+    except Exception as e:
+        print("❌ PyInstaller error!")
+        print(f"   Error: {str(e)}")
         print("   Install dengan: pip install pyinstaller")
         return False
 
@@ -218,6 +244,17 @@ def main():
     print("  BUILD E-KEJAKSAAN DESKTOP APP (.EXE)")
     print("  Credentials akan di-embed ke dalam .exe")
     print("=" * 60)
+    
+    import platform
+    if platform.system() != "Windows":
+        print(f"\n⚠️  PERHATIAN: Anda menjalankan di {platform.system()}")
+        print("   Build akan menghasilkan executable untuk Linux, bukan .exe")
+        print("   Untuk build .exe Windows, jalankan script ini di Windows\n")
+        response = input("Lanjutkan build untuk Linux? (y/n): ")
+        if response.lower() != 'y':
+            print("Build dibatalkan.")
+            sys.exit(0)
+    
     print()
     
     # Step 1: Create embedded files
