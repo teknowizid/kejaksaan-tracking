@@ -240,6 +240,21 @@ def update_cell():
     db.session.commit()
     return jsonify({'success': True})
 
+@app.route('/delete_case/<int:case_id>', methods=['DELETE'])
+@login_required
+def delete_case(case_id):
+    case = Case.query.get(case_id)
+    if not case:
+        return jsonify({'success': False, 'error': 'Case not found'}), 404
+    
+    try:
+        db.session.delete(case)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Data berhasil dihapus'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 def create_admin():
     """Create default admin user if not exists"""
     if not User.query.filter_by(username='admin').first():

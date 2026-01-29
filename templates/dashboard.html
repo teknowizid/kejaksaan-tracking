@@ -80,6 +80,7 @@
                     <th>TAHAP II</th>
                     <th>LIMPAH PN</th>
                     <th>KETERANGAN</th>
+                    <th style="width: 80px;">AKSI</th>
                 </tr>
             </thead>
             <tbody>
@@ -165,6 +166,14 @@
                         class="editable" 
                         data-id="{{ case.id }}" 
                         data-field="keterangan">{{ case.keterangan }}</td>
+                    <td style="text-align: center;">
+                        <button class="btn-delete" 
+                                data-id="{{ case.id }}" 
+                                data-name="{{ case.nama_tersangka }}"
+                                title="Hapus data">
+                            🗑️
+                        </button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -180,6 +189,18 @@
         <div class="modal-actions">
             <button id="cancelDateBtn" class="btn btn-secondary">Batal</button>
             <button id="saveDateBtn" class="btn">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+        <h3>Konfirmasi Hapus</h3>
+        <p id="deleteMessage" style="margin: 1rem 0; color: #666;">Apakah Anda yakin ingin menghapus data ini?</p>
+        <div class="modal-actions">
+            <button id="cancelDeleteBtn" class="btn btn-secondary">Batal</button>
+            <button id="confirmDeleteBtn" class="btn btn-danger">Hapus</button>
         </div>
     </div>
 </div>

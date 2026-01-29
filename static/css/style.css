@@ -521,3 +521,47 @@ tr:hover td {
     border-radius: 4px;
     outline: 1px dashed #cbd5e1;
 }
+
+/* Delete Button Styles */
+.btn-delete {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #ef4444;
+    transform: scale(1.1);
+}
+
+.btn-delete:active {
+    transform: scale(0.95);
+}
+
+/* Danger Button for Modal */
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px -1px rgba(239, 68, 68, 0.4);
+}
+
+/* Success Text for Completed Cases */
+.text-success-bold {
+    color: #10b981 !important;
+    font-weight: 600;
+}

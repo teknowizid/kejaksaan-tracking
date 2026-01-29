@@ -6,7 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const saveBtn = document.getElementById('saveDateBtn');
     const cancelBtn = document.getElementById('cancelDateBtn');
 
+    // Delete Modal Elements
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteMessage = document.getElementById('deleteMessage');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+
     let currentCell = null;
+    let currentDeleteId = null;
 
     // Handle ContentEditable (Text areas)
     editableCells.forEach(cell => {
@@ -60,6 +68,45 @@ document.addEventListener('DOMContentLoaded', function() {
         saveData(currentCell.dataset.id, currentCell.dataset.field, displayValue, true);
         
         dateModal.style.display = 'none';
+    });
+
+    // Handle Delete Buttons
+    deleteButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentDeleteId = this.dataset.id;
+            const caseName = this.dataset.name;
+            deleteMessage.textContent = `Apakah Anda yakin ingin menghapus data "${caseName}"?`;
+            deleteModal.style.display = 'flex';
+        });
+    });
+
+    // Delete Modal Actions
+    cancelDeleteBtn.addEventListener('click', function() {
+        deleteModal.style.display = 'none';
+        currentDeleteId = null;
+    });
+
+    confirmDeleteBtn.addEventListener('click', function() {
+        if (!currentDeleteId) return;
+        
+        fetch(`/delete_case/${currentDeleteId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                deleteModal.style.display = 'none';
+                window.location.reload();
+            } else {
+                alert('Gagal menghapus: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Kesalahan koneksi');
+        });
     });
 
     function saveData(id, field, value, reload = false) {
